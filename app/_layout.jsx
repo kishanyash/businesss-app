@@ -6,11 +6,13 @@ import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 import LoginScreen from "../components/LoginScreen";
 import * as SecureStore from "expo-secure-store";
 
-
+// Token cache functions to handle token storage and retrieval
 const tokenCache = {
   getToken: async (key) => {
     try {
-      return await SecureStore.getItemAsync(key);
+      const token = await SecureStore.getItemAsync(key);
+      console.log("Fetched token:", token);
+      return token || null;  // Return null if the token is not found
     } catch (err) {
       console.error("Error fetching token:", err);
       return null;
@@ -19,6 +21,7 @@ const tokenCache = {
   saveToken: async (key, value) => {
     try {
       await SecureStore.setItemAsync(key, value);
+      console.log("Token saved successfully");
     } catch (err) {
       console.error("Error saving token:", err);
     }
@@ -37,7 +40,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     const fetchToken = async () => {
-      const token = await tokenCache.getToken("someKey");
+      const token = await tokenCache.getToken("authToken"); // Use a consistent key like "authToken"
       if (token) {
         console.log("Token fetched:", token);
       } else {
@@ -54,7 +57,7 @@ export default function RootLayout() {
     config: {
       screens: {
         Home: "home",
-        Profile: "profile/:id", 
+        Profile: "profile/:id",
         Login: "login",
         NotFound: "*",
       },
@@ -71,7 +74,6 @@ export default function RootLayout() {
       <SignedIn>
         <Stack linking={linking}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          {/* Define other screens like Profile, etc. */}
         </Stack>
       </SignedIn>
       <SignedOut>
