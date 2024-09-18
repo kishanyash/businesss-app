@@ -12,6 +12,9 @@ export default function Header() {
       padding: 20,
       paddingTop: 40,
       backgroundColor: Colors.PRIMARY,
+      borderBottomLeftRadius:20,
+      borderBottomRightRadius:20,
+
     }}>
       <View style={{
         flexDirection: 'row',  
@@ -50,13 +53,14 @@ export default function Header() {
         borderRadius: 8,
         marginTop: 20,  
       }}>
-        <FontAwesome name="search" size={24} color="black" />
+        <FontAwesome name="search" size={24} color={Colors.PRIMARY} />
         <TextInput 
           placeholder='Search...' 
           style={{ 
             flex: 1,  
             marginLeft: 10,
-              
+            fontFamily:'Outfit',
+            fontSize:16,
           }}
         />
       </View>
